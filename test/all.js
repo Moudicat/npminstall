@@ -40,7 +40,7 @@ const names = [
   'antd',
   'cnpm',
   'pnpm',
-  'firebase',
+  // 'firebase',
 ];
 
 const semvers = {

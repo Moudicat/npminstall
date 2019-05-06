@@ -4,10 +4,11 @@ const fs = require('mz/fs');
 const assert = require('assert');
 const path = require('path');
 const mm = require('mm');
+const semver = require('semver');
 const npminstall = require('./npminstall');
 const helper = require('./helper');
 
-if (process.platform !== 'win32') {
+if (process.platform !== 'win32' && semver.satisfies(process.version, '< 12.0.0')) {
   describe('test/node-gyp.test.js', () => {
     const [ tmp, cleanup ] = helper.tmp();
 
