@@ -2,54 +2,46 @@
 
 const assert = require('assert');
 const path = require('path');
-const rimraf = require('rimraf');
 const fs = require('mz/fs');
-const mkdirp = require('mkdirp');
 const readJSON = require('../lib/utils').readJSON;
 const npminstall = require('./npminstall');
+const helper = require('./helper');
 
 describe('test/bundleDependencies.test.js', () => {
-  const tmp = path.join(__dirname, 'fixtures', 'tmp');
+  const [ tmp, cleanup ] = helper.tmp();
 
-  function cleanup() {
-    rimraf.sync(tmp);
-  }
-
-  beforeEach(function() {
-    cleanup();
-    mkdirp.sync(tmp);
-  });
+  beforeEach(cleanup);
   afterEach(cleanup);
 
-  it('should install node-pre-gyp@0.6.19', function* () {
-    yield npminstall({
+  it('should install node-pre-gyp@0.6.19', async () => {
+    await npminstall({
       root: tmp,
       pkgs: [
         { name: 'node-pre-gyp', version: '0.6.19' },
       ],
     });
-    const pkg = yield readJSON(path.join(tmp, 'node_modules', 'node-pre-gyp', 'package.json'));
+    const pkg = await readJSON(path.join(tmp, 'node_modules', 'node-pre-gyp', 'package.json'));
     assert.equal(pkg.name, 'node-pre-gyp');
     assert.equal(pkg.version, '0.6.19');
 
     // only node-pre-gyp dir exists
-    const dirs = yield fs.readdir(path.join(tmp, 'node_modules/'));
+    const dirs = await fs.readdir(path.join(tmp, 'node_modules/'));
     assert.deepEqual(dirs.sort(), [ '.bin', '_node-pre-gyp@0.6.19@node-pre-gyp', 'node-pre-gyp' ].sort());
   });
 
-  it('should install bundleDependencies not exist(nyc@6.4.2)', function* () {
-    yield npminstall({
+  it('should install bundleDependencies not exist(nyc@6.4.2)', async () => {
+    await npminstall({
       root: tmp,
       pkgs: [
         { name: 'nyc', version: '6.4.2' },
       ],
     });
-    const exists = fs.existsSync(path.join(tmp, 'node_modules/nyc/node_modules/foreground-child'));
+    const exists = await fs.exists(path.join(tmp, 'node_modules/nyc/node_modules/foreground-child'));
     assert(exists);
   });
 
-  it('should link bundleDependencies bin', function* () {
-    yield npminstall({
+  it('should link bundleDependencies bin', async () => {
+    await npminstall({
       root: tmp,
       pkgs: [{
         name: 'sqlite3',
@@ -57,7 +49,7 @@ describe('test/bundleDependencies.test.js', () => {
         // version: '3.1.3',
       }],
     });
-    const bins = yield fs.readdir(path.join(tmp, 'node_modules/sqlite3/node_modules/.bin'));
+    const bins = await fs.readdir(path.join(tmp, 'node_modules/sqlite3/node_modules/.bin'));
     if (process.platform === 'win32') {
       assert.deepEqual(bins, [ 'node-pre-gyp', 'node-pre-gyp.cmd' ]);
     } else {

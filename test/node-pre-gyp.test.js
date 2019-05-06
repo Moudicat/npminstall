@@ -1,25 +1,16 @@
 'use strict';
 
-const path = require('path');
-const rimraf = require('rimraf');
-const mkdirp = require('mkdirp');
 const npminstall = require('./npminstall');
+const helper = require('./helper');
 
 describe('test/node-pre-gyp.test.js', () => {
-  const tmp = path.join(__dirname, 'fixtures', 'tmp');
+  const [ tmp, cleanup ] = helper.tmp();
 
-  function cleanup() {
-    rimraf.sync(tmp);
-  }
-
-  beforeEach(() => {
-    cleanup();
-    mkdirp.sync(tmp);
-  });
+  beforeEach(cleanup);
   afterEach(cleanup);
 
-  it('should download from http mirror work fine', function* () {
-    yield npminstall({
+  it('should download from http mirror work fine', async () => {
+    await npminstall({
       root: tmp,
       pkgs: [
         { name: 'sqlite3', version: '4' },
