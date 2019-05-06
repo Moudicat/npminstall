@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('assert');
-const rimraf = require('rimraf');
+const rimraf = require('mz-modules/rimraf');
 const path = require('path');
 const npminstall = require('..');
 const helper = require('./helper');

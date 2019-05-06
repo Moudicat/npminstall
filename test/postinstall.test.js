@@ -18,9 +18,10 @@ describe('test/postinstall.test.js', () => {
     afterEach(cleanup);
 
     it('should run preinstall, install, postinstall and prepublish', async () => {
-      await npminstall({
-        root,
-      });
+      await coffee.fork(helper.npminstall, [], { cwd: root })
+        .debug()
+        .expect('code', 0)
+        .end();
       const pkg = await readJSON(path.join(root, 'node_modules', 'utility', 'package.json'));
       assert.equal(pkg.name, 'utility');
       assert.equal(pkg.version, '1.6.0');

@@ -2,8 +2,8 @@
 
 const assert = require('assert');
 const path = require('path');
-const rimraf = require('rimraf');
-const mkdirp = require('mkdirp');
+const rimraf = require('mz-modules/rimraf');
+const mkdirp = require('mz-modules/mkdirp');
 const fs = require('mz/fs');
 const npminstall = require('./npminstall');
 const helper = require('./helper');
@@ -14,13 +14,13 @@ describe('test/installRemote.test.js', () => {
   const root = path.join(__dirname, 'fixtures', 'github');
   const tmp = path.join(__dirname, 'fixtures', 'tmp');
 
-  beforeEach(() => {
-    rimraf.sync(path.join(root, 'node_modules'));
-    mkdirp.sync(tmp);
+  beforeEach(async () => {
+    await rimraf(path.join(root, 'node_modules'));
+    await mkdirp(tmp);
   });
-  afterEach(() => {
-    rimraf.sync(path.join(root, 'node_modules'));
-    rimraf.sync(tmp);
+  afterEach(async () => {
+    await rimraf(path.join(root, 'node_modules'));
+    await rimraf(tmp);
   });
 
   it('should install with remote url', async () => {

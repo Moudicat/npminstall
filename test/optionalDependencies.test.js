@@ -28,11 +28,12 @@ describe('test/optionalDependencies.test.js', () => {
         { name: 'koa-redis', version: '3.1.0' },
       ],
     });
-    const pkg = await helper.eadJSON(path.join(tmp, 'node_modules/koa-redis/package.json'));
+    const pkg = await helper.readJSON(path.join(tmp, 'node_modules/koa-redis/package.json'));
     assert(pkg.optionalDependencies.hiredis);
 
     const dirs = await fs.readdir(path.join(tmp, 'node_modules/koa-redis/node_modules'));
-    assert(dirs.indexOf('hiredis') >= 0);
+    // assert(dirs.includes('hiredis'));
+    assert(dirs.includes('redis'));
   });
 
   it('should ignore optionalDependencies install error', async () => {

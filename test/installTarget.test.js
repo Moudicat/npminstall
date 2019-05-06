@@ -23,7 +23,7 @@ describe('test/installTarget.test.js', () => {
       ],
     });
 
-    let pkg = await helper.eadJSON(path.join(tmp, 'targetDir/node_modules/koa/package.json'));
+    let pkg = await helper.readJSON(path.join(tmp, 'targetDir/node_modules/koa/package.json'));
     assert(pkg.name, 'koa');
     pkg = await helper.readJSON(path.join(tmp, 'targetDir/node_modules/mocha/package.json'));
     assert(pkg.name, 'mocha');

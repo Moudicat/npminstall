@@ -23,9 +23,12 @@ describe('test/peer.test.js', () => {
         .debug()
         .expect('code', 0)
         .end();
-      assert(getPkg('node_modules/antd-tools/node_modules/tslint/node_modules/typescript/package.json').version === '2.1.6');
-      assert(getPkg('node_modules/antd-tools/node_modules/gulp-typescript/node_modules/typescript/package.json').version === '2.1.6');
-      assert(getPkg('node_modules/antd-tools/node_modules/typescript/package.json').version === '2.1.6');
+      let pkg = await getPkg('node_modules/antd-tools/node_modules/tslint/node_modules/typescript/package.json');
+      assert(pkg.version === '2.1.6');
+      pkg = await getPkg('node_modules/antd-tools/node_modules/gulp-typescript/node_modules/typescript/package.json');
+      assert(pkg.version === '2.1.6');
+      pkg = await getPkg('node_modules/antd-tools/node_modules/typescript/package.json');
+      assert(pkg.version === '2.1.6');
     });
 
     it('should ignore peerDependency if in dependencies', async () => {

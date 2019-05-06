@@ -20,7 +20,7 @@ describe('test/installLocal.test.js', () => {
         { name: null, version: 'file:pkg' },
       ],
     });
-    const pkg = await helper.eadJSON(path.join(root, 'node_modules/pkg/package.json'));
+    const pkg = await helper.readJSON(path.join(root, 'node_modules/pkg/package.json'));
     assert.equal(pkg.name, 'pkg');
   });
 

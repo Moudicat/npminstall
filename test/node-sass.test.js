@@ -16,7 +16,7 @@ describe('test/node-sass.test.js', () => {
     await npminstall({
       root: tmp,
       pkgs: [
-        { name: 'node-sass', version: '3' },
+        { name: 'node-sass', version: '4' },
       ],
       env: {
         npm_config_cache: undefined,
